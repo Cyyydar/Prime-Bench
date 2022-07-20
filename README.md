@@ -1,3 +1,5 @@
 # Prime-Bench
 
-trying to do something worthwhile
+First training programm
+
+this is a CPU benchmark that counts how many prime numbers the processor has found in a minute

@@ -1,12 +1,14 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"math"
 	"sync"
 	"time"
 
-	"github.com/gotk3/gotk3/gtk"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 )
 
 var wg sync.WaitGroup
@@ -17,39 +19,18 @@ func main() {
 }
 
 func Gui() {
-	// Инициализируем GTK.
-	gtk.Init(nil)
+	a := app.New()
+	w := a.NewWindow("Prime Bench")
 
-	// Создаём окно верхнего уровня, устанавливаем заголовок
-	// И соединяем с сигналом "destroy" чтобы можно было закрыть
-	// приложение при закрытии окна
-	win, err := gtk.WindowNew(gtk.WINDOW_TOPLEVEL)
-	if err != nil {
-		log.Fatal("Не удалось создать окно:", err)
-	}
-	win.SetTitle("Простой пример")
-	win.Connect("destroy", func() {
-		gtk.MainQuit()
-	})
+	label := widget.NewLabel("MultiCore: " + fmt.Sprint(IsPrimeTimeMultiCore()))
+	label1 := widget.NewLabel("SingleCore: " + fmt.Sprint(IsPrimeTimeSingleCore()))
 
-	// Создаём новую метку чтобы показать её в окне
-	l, err := gtk.LabelNew("Привет, gotk3!")
-	if err != nil {
-		log.Fatal("Не удалось создать метку:", err)
-	}
+	w.SetContent(container.NewVBox(
+		label,
+		label1,
+	))
 
-	// Добавляем метку в окно
-	win.Add(l)
-
-	// Устанавливаем размер окна по умолчанию
-	win.SetDefaultSize(800, 600)
-
-	// Отображаем все виджеты в окне
-	win.ShowAll()
-
-	// Выполняем главный цикл GTK (для отрисовки). Он остановится когда
-	// выполнится gtk.MainQuit()
-	gtk.Main()
+	w.ShowAndRun()
 }
 
 func IsPrimeTimeSingleCore() int {
